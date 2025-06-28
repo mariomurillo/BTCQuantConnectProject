@@ -1,0 +1,243 @@
+# Backtesting Configuration
+# Parameters for running backtests and performance analysis
+
+# Backtest Period
+period:
+  start_date: "2023-01-01"
+  end_date: "2023-12-31"
+  
+  # Alternative periods for testing
+  periods:
+    short_term:
+      start: "2023-10-01"
+      end: "2023-12-31"
+    medium_term:
+      start: "2023-07-01"
+      end: "2023-12-31"
+    full_year:
+      start: "2023-01-01"
+      end: "2023-12-31"
+
+# Capital Settings
+capital:
+  initial_cash: 1000
+  currency: "USD"
+  
+  # Leverage settings
+  leverage:
+    enabled: false
+    max_leverage: 1.0
+
+# Data Settings
+data:
+  # Primary data source
+  source: "QuantConnect"
+  
+  # Data quality filters
+  quality_filters:
+    remove_outliers: true
+    outlier_threshold: 5.0  # Standard deviations
+    
+    fill_gaps: true
+    max_gap_minutes: 10
+    
+    volume_filter: false
+    min_volume: 1000
+
+# Execution Settings
+execution:
+  # Order execution model
+  fill_model: "ImmediateFillModel"
+  
+  # Slippage model
+  slippage:
+    model: "ConstantSlippageModel"
+    basis_points: 5  # 0.05%
+    
+  # Commission model
+  commission:
+    model: "ConstantFeeModel"
+    fee: 0.001  # 0.1%
+    
+  # Market hours
+  market_hours:
+    use_extended_hours: false
+
+# Performance Metrics
+metrics:
+  # Basic metrics
+  basic:
+    - "total_return"
+    - "annual_return"
+    - "volatility"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "max_drawdown"
+    - "calmar_ratio"
+    
+  # Trade-based metrics
+  trade_metrics:
+    - "total_trades"
+    - "win_rate"
+    - "avg_win"
+    - "avg_loss"
+    - "profit_factor"
+    - "avg_trade_duration"
+    - "max_consecutive_wins"
+    - "max_consecutive_losses"
+    
+  # Risk metrics
+  risk_metrics:
+    - "value_at_risk"
+    - "conditional_var"
+    - "beta"
+    - "alpha"
+    - "information_ratio"
+    - "tracking_error"
+
+# Benchmark Comparison
+benchmark:
+  symbol: "SPY"  # S&P 500 ETF
+  
+  # Alternative benchmarks
+  alternatives:
+    - "BTC"   # Bitcoin itself
+    - "QQQ"   # NASDAQ
+    - "GLD"   # Gold ETF
+
+# Optimization Settings
+optimization:
+  # Parameter optimization
+  enabled: false
+  
+  # Optimization method
+  method: "grid_search"  # grid_search, random_search, genetic_algorithm
+  
+  # Parameters to optimize
+  parameters:
+    ema_period:
+      min: 10
+      max: 50
+      step: 5
+      
+    rsi_period:
+      min: 10
+      max: 20
+      step: 2
+      
+    stop_loss_percent:
+      min: 0.003
+      max: 0.01
+      step: 0.001
+      
+    take_profit_percent:
+      min: 0.005
+      max: 0.02
+      step: 0.002
+  
+  # Optimization objective
+  objective: "sharpe_ratio"  # sharpe_ratio, total_return, calmar_ratio
+  
+  # Cross-validation
+  cross_validation:
+    enabled: true
+    folds: 5
+    
+  # Walk-forward analysis
+  walk_forward:
+    enabled: false
+    train_period_months: 6
+    test_period_months: 1
+    step_months: 1
+
+# Reporting
+reporting:
+  # Generate detailed reports
+  detailed_report: true
+  
+  # Report formats
+  formats:
+    - "html"
+    - "pdf"
+    - "json"
+    
+  # Charts to include
+  charts:
+    - "equity_curve"
+    - "drawdown_chart"
+    - "monthly_returns"
+    - "trade_distribution"
+    - "rolling_sharpe"
+    - "underwater_plot"
+    
+  # Export trade log
+  export_trades: true
+  trade_log_format: "csv"
+
+# Monte Carlo Analysis
+monte_carlo:
+  enabled: false
+  simulations: 1000
+  
+  # Bootstrap parameters
+  bootstrap:
+    block_size: 30  # Days
+    replacement: true
+    
+  # Confidence intervals
+  confidence_levels:
+    - 0.05
+    - 0.25
+    - 0.75
+    - 0.95
+
+# Stress Testing
+stress_testing:
+  enabled: false
+  
+  # Scenarios to test
+  scenarios:
+    market_crash:
+      description: "Simulate 2008-style market crash"
+      drawdown_percent: 0.5
+      duration_days: 180
+      
+    high_volatility:
+      description: "High volatility period"
+      volatility_multiplier: 3.0
+      duration_days: 60
+      
+    trending_market:
+      description: "Strong trending market"
+      trend_strength: 0.02  # 2% daily trend
+      duration_days: 90
+
+# Output Settings
+output:
+  # Save results to file
+  save_results: true
+  
+  # Output directory
+  output_dir: "backtest_results"
+  
+  # File naming convention
+  filename_template: "backtest_{algorithm}_{start_date}_{end_date}"
+  
+  # Compression
+  compress_results: true
+  
+# Parallel Processing
+parallel:
+  enabled: false
+  max_workers: 4
+  
+# Logging
+logging:
+  level: "INFO"
+  log_trades: true
+  log_orders: false
+  log_indicators: false
+  
+  # Performance logging
+  log_performance: true
+  performance_frequency: "daily"  # daily, weekly, monthly

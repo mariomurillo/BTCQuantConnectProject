@@ -1,0 +1,168 @@
+# Risk Management Configuration
+# Comprehensive risk controls and position sizing parameters
+
+# Portfolio Risk Limits
+portfolio:
+  # Maximum portfolio exposure
+  max_portfolio_exposure: 1.0  # 100% of capital
+  
+  # Maximum single position size
+  max_position_size: 0.99  # 99% of available cash
+  
+  # Maximum drawdown before stopping
+  max_drawdown_percent: 0.15  # 15%
+  
+  # Daily loss limit
+  daily_loss_limit_percent: 0.05  # 5%
+
+# Position Sizing Methods
+position_sizing:
+  # Method: 'fixed', 'percent_risk', 'kelly', 'volatility_adjusted'
+  method: "percent_risk"
+  
+  # Fixed position sizing
+  fixed:
+    size: 0.99
+    
+  # Percent risk sizing (risk per trade)
+  percent_risk:
+    risk_per_trade: 0.02  # 2% of portfolio per trade
+    
+  # Kelly Criterion
+  kelly:
+    lookback_period: 100  # Number of trades to calculate Kelly
+    max_kelly_fraction: 0.25  # Maximum Kelly fraction to use
+    
+  # Volatility-adjusted sizing
+  volatility_adjusted:
+    base_size: 0.5
+    volatility_lookback: 20
+    volatility_multiplier: 2.0
+
+# Stop Loss Configuration
+stop_loss:
+  # Default stop loss
+  default_percent: 0.005  # 0.5%
+  
+  # Volatility-based stop loss
+  volatility_based:
+    enabled: false
+    multiplier: 2.0  # ATR multiplier
+    min_percent: 0.003  # Minimum 0.3%
+    max_percent: 0.02   # Maximum 2%
+    
+  # Trailing stop loss
+  trailing:
+    enabled: false
+    initial_percent: 0.005
+    trail_percent: 0.003
+    
+  # Time-based stop loss
+  time_based:
+    enabled: true
+    max_hold_minutes: 30
+
+# Take Profit Configuration
+take_profit:
+  # Default take profit
+  default_percent: 0.01  # 1%
+  
+  # Multiple take profit levels
+  multiple_levels:
+    enabled: false
+    levels:
+      - percent: 0.005  # 0.5%
+        size_reduction: 0.3  # Reduce position by 30%
+      - percent: 0.01   # 1%
+        size_reduction: 0.5  # Reduce position by 50%
+      - percent: 0.02   # 2%
+        size_reduction: 1.0  # Close remaining position
+
+# Risk Metrics Monitoring
+monitoring:
+  # Calculate risk metrics
+  calculate_var: true  # Value at Risk
+  var_confidence: 0.95
+  var_lookback: 252
+  
+  # Sharpe ratio monitoring
+  min_sharpe_ratio: 0.5
+  sharpe_lookback: 100
+  
+  # Maximum consecutive losses
+  max_consecutive_losses: 5
+  
+  # Correlation limits (for multi-asset portfolios)
+  max_correlation: 0.8
+
+# Market Condition Adjustments
+market_conditions:
+  # Volatility regime detection
+  volatility_regime:
+    enabled: false
+    high_vol_threshold: 0.02  # 2% daily volatility
+    low_vol_multiplier: 1.2   # Increase size in low vol
+    high_vol_multiplier: 0.8  # Decrease size in high vol
+    
+  # Market hours risk adjustment
+  market_hours:
+    enabled: false
+    reduce_size_after_hours: true
+    after_hours_multiplier: 0.5
+
+# Emergency Controls
+emergency:
+  # Circuit breakers
+  circuit_breaker:
+    enabled: true
+    daily_loss_threshold: 0.05  # 5% daily loss triggers halt
+    consecutive_loss_threshold: 3
+    
+  # Force liquidation conditions
+  force_liquidation:
+    max_drawdown_trigger: 0.15  # 15% drawdown
+    margin_call_trigger: 0.9    # 90% margin usage
+    
+  # Trading halt conditions
+  trading_halt:
+    enabled: true
+    conditions:
+      - "daily_loss > daily_loss_limit"
+      - "consecutive_losses >= max_consecutive_losses"
+      - "drawdown > max_drawdown"
+
+# Risk Reporting
+reporting:
+  # Generate risk reports
+  enabled: true
+  
+  # Report frequency
+  frequency: "daily"  # daily, weekly, monthly
+  
+  # Metrics to include
+  metrics:
+    - "portfolio_value"
+    - "daily_pnl"
+    - "drawdown"
+    - "sharpe_ratio"
+    - "win_rate"
+    - "avg_win_loss_ratio"
+    - "var"
+    - "max_position_size"
+
+# Backtesting Risk Parameters
+backtesting:
+  # Slippage modeling
+  slippage:
+    enabled: true
+    fixed_bps: 5  # 5 basis points
+    
+  # Commission modeling
+  commission:
+    enabled: true
+    per_trade: 0.001  # 0.1%
+    
+  # Market impact
+  market_impact:
+    enabled: false
+    linear_coefficient: 0.0001

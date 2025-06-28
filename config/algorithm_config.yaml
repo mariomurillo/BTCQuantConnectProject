@@ -1,0 +1,107 @@
+# QuantConnect BTC Trading Algorithm Configuration
+# Main algorithm parameters and settings
+
+# Trading Parameters
+trading:
+  symbol: "BTCUSD"
+  market: "Bitfinex"
+  resolution: "Minute"
+  consolidation_minutes: 5
+  
+  # Position sizing
+  position_size: 0.99  # Percentage of available cash to use
+  
+  # Time-based settings
+  trade_duration_minutes: 30  # Maximum time to hold a position
+  
+# Technical Indicators
+indicators:
+  ema:
+    period: 20
+    type: "exponential"
+  
+  rsi:
+    period: 14
+    overbought: 70
+    oversold: 30
+    
+  obv:
+    enabled: true
+    
+  # Additional indicators (for future enhancement)
+  bollinger_bands:
+    period: 20
+    std_dev: 2
+    enabled: false
+    
+  macd:
+    fast_period: 12
+    slow_period: 26
+    signal_period: 9
+    enabled: false
+
+# Entry Conditions
+entry:
+  # Primary conditions (all must be true)
+  conditions:
+    price_above_ema: true
+    rsi_oversold: true  # RSI < oversold threshold
+    obv_increasing: true
+    
+  # Additional filters (optional)
+  filters:
+    volume_filter: false
+    volatility_filter: false
+    time_filter: false
+
+# Exit Conditions
+exit:
+  # Stop loss and take profit
+  stop_loss_percent: 0.005  # 0.5%
+  take_profit_percent: 0.01  # 1.0%
+  
+  # Time-based exit
+  time_based_exit: true
+  
+  # Trailing stop
+  trailing_stop:
+    enabled: false
+    percent: 0.003  # 0.3%
+
+# Algorithm Behavior
+behavior:
+  # Warmup period (max of indicator periods + buffer)
+  warmup_buffer: 1
+  
+  # Logging
+  log_trades: true
+  log_signals: true
+  log_indicators: false
+  
+  # Debug mode
+  debug_mode: false
+
+# Performance Tracking
+performance:
+  track_metrics: true
+  benchmark_symbol: "SPY"  # For comparison
+  
+# Environment Settings
+environment:
+  start_date: "2023-01-01"
+  end_date: "2023-12-31"
+  initial_cash: 1000
+  
+# Advanced Features (for future implementation)
+advanced:
+  machine_learning:
+    enabled: false
+    model_type: "random_forest"
+    
+  multi_timeframe:
+    enabled: false
+    timeframes: ["5min", "15min", "1hour"]
+    
+  portfolio_optimization:
+    enabled: false
+    method: "kelly_criterion"
